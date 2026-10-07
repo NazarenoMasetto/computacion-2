@@ -1,0 +1,20 @@
+# Ejercicio 4.2 - Redis con persistencia (named volume + AOF).
+# Uso: docker compose -f docker-compose.persistencia.yml up
+# version: '3.8'
+
+services:
+  app:
+    build: .
+    environment:
+      - REDIS_HOST=redis
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:alpine
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+
+volumes:
+  redis-data:

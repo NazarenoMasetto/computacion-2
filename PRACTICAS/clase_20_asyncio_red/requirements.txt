@@ -1,0 +1,7 @@
+# Clase 20: Asyncio en red
+#   python3 -m venv venv && source venv/bin/activate
+#   pip install -r requirements.txt
+httpx>=0.27          # ej3_descargas_http.py
+requests>=2.31       # ej3: para ver qué pasa con requests dentro de una corrutina
+fastapi>=0.115       # servidor_prueba.py (reemplazo local de example.com)
+uvicorn>=0.30

@@ -1,0 +1,36 @@
+Ejercicio 1.1 - Investigando el sistema
+=======================================
+(Valores obtenidos en la máquina de prueba; en otra máquina los números cambian.
+ Los comandos están en comandos.sh.)
+
+1. ¿Cuántos archivos hay directamente en /etc?
+   Comando: find /etc -maxdepth 1 -type f | wc -l   -> 76 archivos regulares
+   Si contamos todas las entradas (archivos + directorios + symlinks):
+   ls -A /etc | wc -l   -> 167
+   Ojo: "ls /etc | wc -l" sin -A no cuenta los ocultos.
+
+2. ¿Tamaño exacto de /etc/passwd?
+   Comando: stat -c '%s' /etc/passwd   -> 3333 bytes
+   (también se ve en la 5ta columna de ls -l /etc/passwd)
+
+3. ¿Qué tipo de archivo es /dev/null?
+   Comando: file /dev/null -> "character special (1/3)"; ls -l muestra 'c' al principio.
+   Es un dispositivo de caracteres (major 1, minor 3). Es especial porque no es un
+   archivo con datos en disco: todo lo que se escribe ahí se descarta y leerlo
+   devuelve EOF inmediatamente. Se usa para tirar salida (cmd > /dev/null) o como
+   entrada vacía. Tiene permisos rw-rw-rw- para que cualquiera lo pueda usar.
+
+4. ¿A dónde apunta /bin?
+   Comando: readlink /bin -> usr/bin   (readlink -f /bin -> /usr/bin)
+   Es un symlink relativo, resultado del "usrmerge" de las distros modernas.
+
+5. ¿Número de inodo de .bashrc?
+   Comando: ls -i ~/.bashrc  (o stat -c %i ~/.bashrc) -> 175682
+
+6. ¿Cuántos enlaces duros tiene /home? ¿Por qué?
+   Comando: stat -c %h /home -> 4
+   Un directorio siempre tiene como mínimo 2 enlaces: su entrada en el padre
+   ("home" dentro de /) y su propia entrada "." . Además, cada subdirectorio
+   tiene una entrada ".." que apunta a /home. Acá hay 2 subdirectorios
+   (dos usuarios), entonces 2 + 2 = 4.
+   Regla: enlaces de un directorio = 2 + cantidad de subdirectorios.

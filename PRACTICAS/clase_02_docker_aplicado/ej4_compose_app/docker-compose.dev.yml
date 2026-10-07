@@ -1,0 +1,16 @@
+# Ejercicio 4.3 - Hot reload para desarrollo: el código local se monta en /app,
+# así que al editar app.py alcanza con "docker compose -f docker-compose.dev.yml restart app".
+# version: '3.8'
+
+services:
+  app:
+    build: .
+    volumes:
+      - .:/app
+    environment:
+      - REDIS_HOST=redis
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:alpine

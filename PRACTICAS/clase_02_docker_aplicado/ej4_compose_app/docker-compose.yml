@@ -1,0 +1,15 @@
+# Ejercicio 4.1 - App con Redis (sin persistencia).
+# Nota: la consigna pone "version: '3.8'". Con Docker Compose v2 esa clave
+# es obsoleta (solo tira un warning), así que la dejamos comentada.
+# version: '3.8'
+
+services:
+  app:
+    build: .
+    environment:
+      - REDIS_HOST=redis
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:alpine

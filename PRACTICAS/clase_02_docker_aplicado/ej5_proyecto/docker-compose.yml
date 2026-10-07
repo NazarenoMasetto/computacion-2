@@ -1,0 +1,30 @@
+# Ejercicio 5 - Proyecto integrador: web + redis + worker.
+# El puerto del host se puede cambiar con WEB_PORT (default 8000):
+#   WEB_PORT=8080 docker compose up
+
+services:
+  web:
+    build: ./web
+    ports:
+      - "${WEB_PORT:-8000}:8000"
+    environment:
+      - REDIS_HOST=redis
+      - PORT=8000
+    depends_on:
+      - redis
+
+  worker:
+    build: ./worker
+    environment:
+      - REDIS_HOST=redis
+      - INTERVALO=1
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:alpine
+    volumes:
+      - redis-data:/data
+
+volumes:
+  redis-data:
