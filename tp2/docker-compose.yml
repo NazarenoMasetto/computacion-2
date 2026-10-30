@@ -1,0 +1,16 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      WORKERS: "${WORKERS:-4}"   # se puede cambiar: WORKERS=50 docker compose up
+      TIMEOUT_DEFAULT: "30"
+      ESPERA_APAGADO: "10"
+      DIR_ESTADO: "/app/datos"
+    volumes:
+      # los volcados JSON quedan en ./datos del host y sobreviven al contenedor
+      - ./datos:/app/datos
+    # docker manda SIGTERM y espera esto antes de SIGKILL; tiene que ser
+    # mayor que ESPERA_APAGADO para que el apagado ordenado llegue a terminar
+    stop_grace_period: 20s
